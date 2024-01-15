@@ -1,0 +1,4 @@
+#mail.example.jp		:
+#example.jp		smtp:
+#.example.jp		smtp:
+*			python_receiver:

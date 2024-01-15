@@ -1,0 +1,16 @@
+{
+    "name": "yt_testing_smtpserver_devcontainer",
+    "overrideCommand": false,
+    "dockerComposeFile": "./docker-compose.yml",
+    "service": "devcontainer",
+    "workspaceFolder": "/workspace/",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+            "ms-python.python",
+            "GitHub.copilot",
+            "ms-azuretools.vscode-docker"
+        ] 
+      }
+    }
+  }
