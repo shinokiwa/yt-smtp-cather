@@ -1,4 +1,3 @@
-#mail.example.jp		:
-#example.jp		smtp:
-#.example.jp		smtp:
+# transport_maps 固定設定ファイル
+# 基本書き換えない。
 *			python_receiver:

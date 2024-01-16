@@ -1,0 +1,2 @@
+dbpath = /workspace/data/mail.sqlite3
+query = SELECT transport FROM transport_map WHERE domain='%s'

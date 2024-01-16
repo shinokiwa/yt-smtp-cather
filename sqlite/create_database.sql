@@ -5,5 +5,15 @@ CREATE TABLE mails (
     sender TEXT NOT NULL,
     recipient TEXT NOT NULL,
     subject TEXT NOT NULL,
-    mail_data TEXT NOT NULL
+    mail_data TEXT NOT NULL,
+    registed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS transport_map;
+
+CREATE TABLE transport_map (
+    id INTEGER PRIMARY KEY,
+    domain TEXT NOT NULL,
+    transport TEXT NOT NULL
 );

@@ -32,7 +32,7 @@ data_directory = /var/lib/postfix
 mydestination = 
 luser_relay = root@localhost
 local_recipient_maps =
-transport_maps = hash:/etc/postfix/transport
+transport_maps = sqlite:/etc/postfix/sqlite_transport_map.cf, hash:/etc/postfix/transport
 
 ###########################################
 # ログ設定
