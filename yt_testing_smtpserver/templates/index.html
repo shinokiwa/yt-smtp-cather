@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing SMTP Server</title>
+</head>
+<body>
+    <h1>Testing SMTP Server</h1>
+
+    <h2>受信メール一覧</h2>
+    <ul>
+        {% for item in mails %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
