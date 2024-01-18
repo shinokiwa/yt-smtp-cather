@@ -9,7 +9,7 @@ def create_app(db_path=None):
     app = Flask(__name__)
 
     if db_path is None:
-        db_path = ':memory:'
+        db_path = '/workspace/data/mail.sqlite3'
 
     app.config['DB_PATH'] = db_path
 

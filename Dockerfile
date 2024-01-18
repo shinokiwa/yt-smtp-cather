@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     locales \
     sqlite3 \
     postfix \
+    postfix-sqlite \
     && rm -rf /var/lib/apt/lists/*
 
 # ロケールを設定
@@ -24,13 +25,6 @@ RUN mkdir -p /entrypoint && \
     mkdir -p /workspace/data && \
     mkdir -p /workspace/yt_testing_smtpserver
 
-#### SQLite3環境構築 ####
-
-# DBの初期化
-COPY sqlite/create_database.sql /workspace/sqlite/create_database.sql
-RUN sqlite3 /workspace/data/mail.sqlite3 < /workspace/sqlite/create_database.sql
-RUN chmod -R 777 /workspace/data
-
 #### Python環境構築 ####
 
 # さしあたってsetuptoolsをインストール
@@ -43,15 +37,27 @@ COPY yt_testing_smtpserver /workspace/yt_testing_smtpserver
 COPY setup.py /workspace/setup.py
 COPY setup.cfg /workspace/setup.cfg
 
-# PYTHONPATHを設定
-ENV PYTHONPATH=/workspace
-
 # pipインストール
 RUN pip install -e /workspace
 
-# Postfixの設定
+#### 環境変数の設定 ####
+ENV PYTHONPATH=/workspace \
+    YT_TSSERVER_DB_PATH=/workspace/data/mail.sqlite3 \
+    YT_TSSERVER_SQLITE_PATH=/workspace/sqlite 
+
+#### SQLite3環境構築 ####
+
+# DBの初期化
+COPY sqlite/*.sql /workspace/sqlite/
+RUN chmod -R 777 /workspace/data
+#RUN python -m yt_testing_smtpserver.setup_database
+
+#### Postfix環境構築 ####
+
 COPY postfix/* /etc/postfix/
 RUN postmap /etc/postfix/transport
+
+#### エントリーポイントの設定 ####
 
 # 実行スクリプトのコピー
 COPY entrypoint/* /entrypoint/

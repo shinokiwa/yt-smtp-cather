@@ -1,0 +1,3 @@
+# YT-Testing-SMTPServer SQLite3構築スクリプト兼テーブル定義書
+
+テーブルの詳細情報は各sqlファイル内のコメントに記載しています。

@@ -11,7 +11,7 @@ fi
 
 
 # 管理ツールが起動済みの場合は停止する
-if [ $(ps -ef | grep -v grep | grep -c "gunicorn") -eq 0 ]; then
+if [ $(ps -ef | grep -v grep | grep -c "gunicorn") -ne 0 ]; then
     kill -9 `ps -ef | grep -v grep | grep "gunicorn" | awk '{ print $2 }'`
 fi
 
