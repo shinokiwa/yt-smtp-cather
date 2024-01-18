@@ -17,7 +17,11 @@ def setup_database():
     DBセットアップ
     """
     db_path = get_database_path()
-    sql_dir = get_sqllite_path()
+    sql_dir = os.path.join(get_sqllite_path(), 'latest')
+
+    if os.path.exists(sql_dir):
+        logger.info('No setup files found.')
+        return
 
     db = connect_database(db_path)
 

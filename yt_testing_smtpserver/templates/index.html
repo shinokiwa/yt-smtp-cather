@@ -8,10 +8,17 @@
     <h1>Testing SMTP Server</h1>
 
     <h2>受信メール一覧</h2>
-    <ul>
+    <table>
         {% for item in mails %}
-            <li>{{ item }}</li>
+        <tr>
+            <td> {{ item['id'] }}</td>
+            <td> {{ item['sender'] }}</td>
+            <td> {{ item['recipient'] }}</td>
+            <td> {{ item['subject'] }}</td>
+            <td> {{ item['mail_data'] }}</td>
+            <td> {{ item['updated_at'] }}</td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
 </body>
 </html>
