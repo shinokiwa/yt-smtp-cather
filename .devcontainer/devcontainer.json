@@ -10,6 +10,17 @@
 
     "customizations": {
       "vscode": {
+        "settings": {
+	        "python.defaultInterpreterPath": "/usr/local/bin/python3",
+	        "python.testing.pytestPath": "/usr/local/bin/pytest",
+            "python.testing.cwd": "/workspace/",
+            "python.testing.pytestEnabled": true,
+            "python.testing.pytestArgs": [
+                "-s",
+                "-v"
+            ],
+            "python.testing.unittestEnabled": false
+        },
         "extensions": [
             "ms-python.python",
             "GitHub.copilot",

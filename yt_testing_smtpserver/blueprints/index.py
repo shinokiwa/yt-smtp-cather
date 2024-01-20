@@ -3,8 +3,8 @@
 """
 from flask import Blueprint, render_template, current_app
 
-from yt_testing_smtpserver.db import connect_database
-from yt_testing_smtpserver.db.mails import get_all_mails
+from u_dam.sqlite3 import connect_database
+from database.tables.mails import get_all_mails
 
 bp = Blueprint('index', __name__)
 

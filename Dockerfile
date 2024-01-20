@@ -40,6 +40,9 @@ COPY setup.cfg /workspace/setup.cfg
 # pipインストール
 RUN pip install -e /workspace
 
+# U-DAMはいまのところPyPIにはないので、GitHubから直接インストール
+RUN pip install git+https://github.com/shinokiwa/u-dam.git
+
 #### 環境変数の設定 ####
 ENV PYTHONPATH=/workspace \
     YT_TSSERVER_DB_PATH=/workspace/data/mail.sqlite3 \
@@ -47,8 +50,8 @@ ENV PYTHONPATH=/workspace \
 
 #### SQLite3環境構築 ####
 
-# DBの初期化
-COPY sqlite/*.sql /workspace/sqlite/
+# データディレクトリの設定
+#COPY sqlite/*.sql /workspace/sqlite/
 RUN chmod -R 777 /workspace/data
 #RUN python -m yt_testing_smtpserver.setup_database
 
