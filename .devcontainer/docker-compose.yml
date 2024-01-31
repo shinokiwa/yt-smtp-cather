@@ -16,6 +16,9 @@ services:
               source: app_data
               target: /workspace/data
             - type: bind
+              source: ../entrypoint/
+              target: /entrypoint/
+            - type: bind
               source: ../postfix/main.cf
               target: /etc/postfix/main.cf
             - type: bind
@@ -26,6 +29,7 @@ services:
               target: /etc/postfix/transport
         environment:
             LANG: ja_JP.UTF-8
+            DEBUG: 1
 
 volumes:
     app_data:

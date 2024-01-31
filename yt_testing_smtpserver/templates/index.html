@@ -8,6 +8,7 @@
     <h1>Testing SMTP Server</h1>
 
     <h2>受信メール一覧</h2>
+    <button type="button" onclick="location.href='/delete_all'">全件削除</button>
     <table>
         {% for item in mails %}
         <tr>
@@ -15,7 +16,6 @@
             <td> {{ item['sender'] }}</td>
             <td> {{ item['recipient'] }}</td>
             <td> {{ item['subject'] }}</td>
-            <td> {{ item['mail_data'] }}</td>
             <td> {{ item['updated_at'] }}</td>
         </tr>
         {% endfor %}

@@ -32,8 +32,10 @@ RUN pip install --upgrade pip && \
     pip install setuptools
 
 # Pythonソースコピー
-RUN mkdir -p /workspace/yt_testing_smtpserver
+RUN mkdir -p /workspace/yt_testing_smtpserver && \
+    mkdir -p /workspace/database
 COPY yt_testing_smtpserver /workspace/yt_testing_smtpserver
+COPY database /workspace/database
 COPY setup.py /workspace/setup.py
 COPY setup.cfg /workspace/setup.cfg
 
@@ -51,9 +53,7 @@ ENV PYTHONPATH=/workspace \
 #### SQLite3環境構築 ####
 
 # データディレクトリの設定
-#COPY sqlite/*.sql /workspace/sqlite/
 RUN chmod -R 777 /workspace/data
-#RUN python -m yt_testing_smtpserver.setup_database
 
 #### Postfix環境構築 ####
 
