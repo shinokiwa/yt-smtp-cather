@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing SMTP Server</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+    <h1>Testing SMTP Server</h1>
+
+    <h2>受信メール</h2>
+    <a href="/">一覧に戻る</a><br />
+    <button type="button" onclick="location.href='/delete/{{ mail['id'] }}'">削除</button>
+    <table>
+        <tr>
+            <th>ID</th>
+            <td>{{ mail['id'] }}</td>
+        </tr>
+        <tr>
+            <th>送信元</th>
+            <td>{{ mail['sender'] }}</td>
+        </tr>
+        <tr>
+            <th>宛先</th>
+            <td>{{ mail['recipient'] }}</td>
+        </tr>
+        <tr>
+            <th>件名</th>
+            <td>{{ mail['subject'] | default('(no title)', true) }}</td>
+        </tr>
+        <tr>
+            <th>受信日時</th>
+            <td>{{ mail['updated_at'] }}</td>
+        </tr>
+        <tr>
+            <th>本文</th>
+            <td>{{ mail['mail_data'] | replace('\n', '<br>') | safe }}</td>
+        </tr>
+    </table>
+    <a href="/">一覧に戻る</a><br />
+</body>
+</html>

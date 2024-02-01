@@ -1,6 +1,7 @@
 """
 Flaskのappを作成する
 """
+import os
 from flask import Flask
 from u_dam.sqlite3 import setup_database, connect_database
 
@@ -17,5 +18,7 @@ def create_app(db_path=None):
     app.config['DB_PATH'] = db_path
 
     app.register_blueprint(setup_routes())
+    app.static_url_path = '/static'
+    app.static_folder = os.path.join(os.path.dirname(__file__), 'static')
 
     return app

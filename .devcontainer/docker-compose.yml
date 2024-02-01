@@ -27,6 +27,11 @@ services:
             - type: bind
               source: ../postfix/transport
               target: /etc/postfix/transport
+        ports:
+            - target: 8000
+              published: 8000
+              protocol: tcp
+              mode: host
         environment:
             LANG: ja_JP.UTF-8
             DEBUG: 1

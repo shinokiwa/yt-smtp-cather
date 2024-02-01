@@ -37,6 +37,19 @@ def get_all_mails(conn:sqlite3.Connection):
     cur = conn.execute("SELECT * FROM mails ORDER BY updated_at DESC")
     return cur.fetchall()
 
+def get_mail (conn:sqlite3.Connection, mail_id:int):
+    """メールを取得する
+
+    Args:
+        conn (sqlite3.Connection): データベース接続オブジェクト
+        mail_id (int): メールID
+
+    Returns:
+        sqlite3.Row: メール
+    """
+    cur = conn.execute("SELECT * FROM mails WHERE id=?", (mail_id,))
+    return cur.fetchone()
+
 def delete_mail(conn:sqlite3.Connection, mail_id:int):
     """メールを削除する
 
@@ -45,4 +58,13 @@ def delete_mail(conn:sqlite3.Connection, mail_id:int):
         mail_id (int): メールID
     """
     conn.execute("DELETE FROM mails WHERE id=?", (mail_id,))
+    conn.commit()
+
+def delete_mail_all(conn:sqlite3.Connection):
+    """メールをすべて削除する
+
+    Args:
+        conn (sqlite3.Connection): データベース接続オブジェクト
+    """
+    conn.execute("DELETE FROM mails")
     conn.commit()
