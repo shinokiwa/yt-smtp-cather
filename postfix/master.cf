@@ -138,4 +138,4 @@ mailman   unix  -       n       n       -       -       pipe
 
 # Pythonにメールを転送する
 python_receiver    unix  -       n       n       -       -       pipe
-  flags=FR user=yt_server argv=/usr/local/bin/python /workspace/yt_testing_smtpserver/mail_receiver.py ${sender} ${recipient}
+  flags=FR user=yt_server argv=/usr/local/bin/python /workspace/yt_smtp_catcher/mail_receiver.py ${sender} ${recipient}

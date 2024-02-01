@@ -1,12 +1,12 @@
 {
-    "name": "yt_testing_smtpserver_devcontainer",
+    "name": "yt_smtp_catcher_devcontainer",
 
     "overrideCommand": false,
     "dockerComposeFile": "./docker-compose.yml",
     "service": "devcontainer",
 
     "workspaceFolder": "/workspace/",
-    "postCreateCommand": "/entrypoint/setup_dev.sh",
+    "postCreateCommand": ". /entrypoint/setup_dev.sh",
 
     "customizations": {
       "vscode": {

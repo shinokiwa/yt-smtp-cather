@@ -1,7 +1,7 @@
 """
 メイン処理 通常使わない
 """
-from yt_testing_smtpserver import create_app
+from yt_smtp_catcher import create_app
 
 if __name__ == '__main__':
     app = create_app()

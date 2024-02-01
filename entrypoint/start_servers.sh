@@ -15,12 +15,12 @@ if [ "$DEBUG" = "1" ]; then
     if [ $(ps -ef | grep -v grep | grep -c "/usr/local/bin/python3") -ne 0 ]; then
         kill -9 `ps -ef | grep -v grep | grep "/usr/local/bin/python3" | awk '{ print $2 }'`
     fi
-    /usr/local/bin/python3 -m yt_testing_smtpserver &
+    /usr/local/bin/python3 -m yt_smtp_catcher &
 
 else
     # 本番モードの場合はGunicornを起動する
     if [ $(ps -ef | grep -v grep | grep -c "gunicorn") -ne 0 ]; then
         kill -9 `ps -ef | grep -v grep | grep "gunicorn" | awk '{ print $2 }'`
     fi
-    gunicorn -b 0.0.0.0 'yt_testing_smtpserver:create_app()' &
+    gunicorn -b 0.0.0.0 'yt_smtp_catcher:create_app()' &
 fi

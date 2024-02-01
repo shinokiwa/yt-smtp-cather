@@ -1,5 +1,5 @@
 # 基本イメージとしてPythonの公式イメージを使用
-FROM python:3.10 as yt_testing_smtpserver
+FROM python:3.10
 
 # 必要なパッケージをインストール
 RUN apt-get update && apt-get install -y \
@@ -23,7 +23,7 @@ WORKDIR /workspace
 RUN mkdir -p /entrypoint && \
     mkdir -p /workspace/sqlite && \
     mkdir -p /workspace/data && \
-    mkdir -p /workspace/yt_testing_smtpserver
+    mkdir -p /workspace/yt_smtp_catcher
 
 #### Python環境構築 ####
 
@@ -32,9 +32,9 @@ RUN pip install --upgrade pip && \
     pip install setuptools
 
 # Pythonソースコピー
-RUN mkdir -p /workspace/yt_testing_smtpserver && \
+RUN mkdir -p /workspace/yt_smtp_catcher && \
     mkdir -p /workspace/database
-COPY yt_testing_smtpserver /workspace/yt_testing_smtpserver
+COPY yt_smtp_catcher /workspace/yt_smtp_catcher
 COPY database /workspace/database
 COPY setup.py /workspace/setup.py
 COPY setup.cfg /workspace/setup.cfg
