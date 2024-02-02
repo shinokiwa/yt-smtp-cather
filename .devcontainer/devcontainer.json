@@ -23,7 +23,6 @@
         },
         "extensions": [
             "ms-python.python",
-            "GitHub.copilot",
             "ms-azuretools.vscode-docker",
             "EditorConfig.EditorConfig"
         ] 
