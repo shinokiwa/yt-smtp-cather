@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing SMTP Server</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+    {% include 'navi.html' %}
+
+    <h2>メール送信テスト用</h2>
+
+    <div>
+        <form action="/mail" method="post">
+            <div>
+                <label for="sender">送信元</label>
+                <input type="text" id="sender" name="sender" value="{{ sender }}">
+            </div>
+            <div>
+                <label for="recipient">宛先</label>
+                <input type="text" id="recipient" name="recipient" value="{{ recipient }}">
+            </div>
+            <div>
+                <label for="subject">件名</label>
+                <input type="text" id="subject" name="subject" value="{{ subject }}">
+            </div>
+            <div>
+                <label for="mail_data">本文</label>
+                <textarea id="mail_data" name="mail_data">{{ mail_data }}</textarea>
+            </div>
+            <div>
+                <button type="submit">送信</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

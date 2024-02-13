@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Testing SMTP Server</h1>
+    {% include 'navi.html' %}
 
     <h2>受信メール一覧</h2>
     <button type="button" onclick="location.href='/delete_all'">全件削除</button>
@@ -46,7 +46,7 @@
                 data-id="{{ item['id'] }}"
                 data-subject="{{ item['subject'] }}"
             >
-                <a href="/mail/{{item['id']}}">{{ item['subject'] | default('(no title)', true) }}</a>
+                <a href="/detail/{{item['id']}}">{{ item['subject'] | default('(no title)', true) }}</a>
             </td>
             <td
                 class="mail-updated"
