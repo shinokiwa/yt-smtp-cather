@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>Testing SMTP Server</title>
-
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-</head>
-<body>
-    {% include 'navi.html' %}
-
+{% include 'common_start.html' %}
     <h2>受信メール</h2>
     <button type="button" onclick="location.href='/delete/{{ mail['id'] }}'">削除</button>
     <table>
@@ -37,6 +27,4 @@
             <td>{{ mail['mail_data'] | replace('\n', '<br>') | safe }}</td>
         </tr>
     </table>
-    <a href="/">一覧に戻る</a><br />
-</body>
-</html>
+{% include 'common_end.html' %}
