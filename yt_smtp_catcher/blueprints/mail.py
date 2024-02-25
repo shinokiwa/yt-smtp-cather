@@ -1,7 +1,7 @@
 """
 メール送信ページ
 """
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app, request
 from pydantic import BaseModel
 
 from u_dam.sqlite3 import connect_database
@@ -17,9 +17,9 @@ def mail():
     return render_template('mail.html')
 
 class MailPost(BaseModel):
-    from: str
-    to: str
-    subject: str
+    mail_from: str
+    mail_to: str
+    mail_subject: str
 
 
 @bp.route('/mail', methods=['POST'])
@@ -32,10 +32,10 @@ def mail_post():
 
     # メール送信
     current_app.mailer.send(
-        mail['from'],
-        mail['to'],
-        mail['subject'],
-        mail['body']
+        mail['mail_from'],
+        mail['mail_to'],
+        mail['mail_subject'],
+        mail['mail_body']
     )
 
     return render_template('mail.html')

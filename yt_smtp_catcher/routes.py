@@ -4,9 +4,12 @@
 from flask import Blueprint
 from importlib import import_module
 
-def setup_routes () -> Blueprint:
+def setup_blueprint () -> Blueprint:
     """
-    ルーティングを設定する
+    ルーティングが設定されたBlueprintを作成する。
+
+    Return:
+        Blueprint: ルーティング設定ずみのBlueprint
     """
     bp = Blueprint('routes', __name__)
 
