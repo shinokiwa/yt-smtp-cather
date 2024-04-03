@@ -1,29 +1,35 @@
+# 開発用コンテナ
 # 基本イメージとしてPythonの公式イメージを使用
 FROM python:3.10
 
 # 必要なパッケージをインストール
 RUN apt-get update && apt-get install -y \
     locales \
-    sqlite3 \
-    postfix \
-    postfix-sqlite \
-    && rm -rf /var/lib/apt/lists/*
+    sqlite3
 
 # ロケールを設定
 RUN locale-gen ja_JP.UTF-8
 
-# 実行ユーザーを作成
-RUN groupadd -g 1000 yt_server && \
-    useradd -g 1000 -u 1000 -m yt_server
+# DockerオフィシャルのGPGキーを追加
+RUN install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && \
+    chmod a+r /etc/apt/keyrings/docker.asc
+
+# Dockerのリポジトリを追加
+RUN echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+# aptのキー削除
+RUN rm -rf /var/lib/apt/lists/*
 
 # 作業ディレクトリを設定
 WORKDIR /workspace
 
 # 使用するディレクトリを一括作成
-RUN mkdir -p /entrypoint && \
-    mkdir -p /workspace/sqlite && \
-    mkdir -p -m 777 /workspace/data && \
-    mkdir -p /workspace/yt_smtp_catcher
+RUN mkdir -p -m 777 /workspace/data
 
 #### Python環境構築 ####
 
@@ -40,7 +46,7 @@ COPY setup.py /workspace/setup.py
 COPY setup.cfg /workspace/setup.cfg
 
 # pipインストール
-RUN pip install -e /workspace
+RUN pip install -e /workspace[dev]
 
 # U-DAMはいまのところPyPIにはないので、GitHubから直接インストール
 RUN pip install git+https://github.com/shinokiwa/u-dam.git
@@ -50,24 +56,4 @@ ENV PYTHONPATH=/workspace \
     YT_TSSERVER_DB_PATH=/workspace/data/mail.sqlite3 \
     YT_TSSERVER_SQLITE_PATH=/workspace/sqlite 
 
-#### SQLite3環境構築 ####
-
-# データディレクトリの設定
-RUN chmod -R 777 /workspace/data
-
-#### Postfix環境構築 ####
-
-COPY postfix/* /etc/postfix/
-RUN postmap /etc/postfix/transport
-
-#### エントリーポイントの設定 ####
-
-# 実行スクリプトのコピー
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# ポートを開放
-EXPOSE 25
-EXPOSE 8000
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["tail", "-F", "/dev/null"]

@@ -1,11 +1,12 @@
 """
 メール送信ページ
 """
-from flask import Blueprint, render_template, current_app, request
-from pydantic import BaseModel
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText 
 
-from u_dam.sqlite3 import connect_database
-from database.tables.mails import get_mail
+from flask import Blueprint, render_template, current_app, request
+from pydantic import BaseModel, ValidationError
 
 bp = Blueprint('mail', __name__)
 
@@ -20,6 +21,7 @@ class MailPost(BaseModel):
     mail_from: str
     mail_to: str
     mail_subject: str
+    mail_body: str
 
 
 @bp.route('/mail', methods=['POST'])
@@ -27,15 +29,22 @@ def mail_post():
     """
     メール送信
     """
-    mail_id = request.form['mail_id']
-    mail = get_mail(mail_id)
+    try:
+        mail = MailPost(
+            **request.form.to_dict()
+        )
+    except ValidationError as e:
+        return render_template('mail.html', error=True, error_message=e.json(), **request.form.to_dict())
 
-    # メール送信
-    current_app.mailer.send(
-        mail['mail_from'],
-        mail['mail_to'],
-        mail['mail_subject'],
-        mail['mail_body']
-    )
+    msg = MIMEMultipart()
+    msg['From'] = request.form['mail_from']
+    msg['To'] = request.form['mail_to']
+    msg['Subject'] = request.form['mail_subject']
+    msg.attach(MIMEText(request.form['mail_body'], 'plain'))
 
-    return render_template('mail.html')
+    # SMTPサーバに接続
+    smtp = smtplib.SMTP('localhost', 25)
+    smtp.send_message(msg)
+    smtp.quit()
+
+    return render_template('mail.html', result=True, **request.form.to_dict())

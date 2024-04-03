@@ -1,6 +1,19 @@
 {% include 'common_start.html' %}
 <h2>メール送信テスト用フォーム</h2>
 
+{% if result %}
+    <div class="message-box">
+        <p>メールを送信しました。</p>
+    </div>
+{% endif %}
+
+{% if error %}
+    <div class="message-box alert">
+        <p>メールの送信に失敗しました。</p>
+        <p>{{ error_message }}</p>
+    </div>
+{% endif %}
+
 <form action="/mail" method="post">
     <div class="u-full-width">
         <label for="mail_from">送信元</label>
@@ -8,15 +21,15 @@
     </div>
     <div class="u-full-width">
         <label for="mail_to">宛先</label>
-        <input class="u-full-width" type="text" id="mail-to" name="mail-to" value="{{ recipient }}">
+        <input class="u-full-width" type="text" id="mail_to" name="mail_to" value="{{ mail_to }}">
     </div>
     <div class="u-full-width">
         <label for="mail_subject">件名</label>
-        <input class="u-full-width" type="text" id="mail_subject" name="mail_subject" value="{{ subject }}">
+        <input class="u-full-width" type="text" id="mail_subject" name="mail_subject" value="{{ mail_subject }}">
     </div>
     <div class="u-full-width">
         <label for="mail_data">本文</label>
-        <textarea class="u-full-width" id="mail_data" name="mail_data" style="height: 10em;">{{ mail_data }}</textarea>
+        <textarea class="u-full-width" id="mail_body" name="mail_body" style="height: 10em;">{{ mail_body }}</textarea>
     </div>
     <div>
         <button class="button-primary" type="submit">送信</button>
