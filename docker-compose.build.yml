@@ -1,0 +1,17 @@
+# ビルド用docker-compose
+#
+# 基本的にはビルド用
+name: yt-smtp-catcher
+services:
+    yt-smtp-catcher:
+        build:
+            context: ./
+            dockerfile: ./docker/main/Dockerfile
+        ports:
+            - target: 8000
+              published: 8000
+              protocol: tcp
+              mode: host
+        environment:
+            LANG: ja_JP.UTF-8
+        restart: "no"

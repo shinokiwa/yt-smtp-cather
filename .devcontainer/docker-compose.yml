@@ -13,14 +13,11 @@ services:
             dockerfile: ./.devcontainer/Dockerfile
         volumes:
             - type: bind 
-              source: ${WORK_DIR?err}/
+              source: ../
               target: /workspace/
             - type: volume
               source: app_data
               target: /workspace/data
-            - type: bind
-              source: ../.devcontainer/main.cf
-              target: /etc/postfix/main.cf
             # Docker Outside of Dockerの設定
             # この機能をWindowsで動かすためには上記の環境変数が必要。
             - type: bind
@@ -28,50 +25,6 @@ services:
               target: /var/run/docker.sock
         environment:
             LANG: ja_JP.UTF-8
-
-    # メインのSMTPサーバーをデバッグ実行する
-    yt-smtp-server:
-        build:
-            context: ../
-            dockerfile: Dockerfile
-        volumes:
-            - type: bind 
-              source: ../
-              target: /workspace/
-            - type: volume
-              source: app_data
-              target: /workspace/data
-            - type: bind
-              source: ../postfix/main.cf
-              target: /etc/postfix/main.cf
-            - type: bind
-              source: ../postfix/master.cf
-              target: /etc/postfix/master.cf
-            - type: bind
-              source: ../postfix/transport
-              target: /etc/postfix/transport
-        ports:
-            - target: 8000
-              published: 8000
-              protocol: tcp
-              mode: host
-        environment:
-            LANG: ja_JP.UTF-8
-            DEBUG: 1
-        depends_on:
-            - devcontainer
-        restart: "no"
-
-    # E2Eテスト用のSeleniumサーバー
-    selenium-chrome:
-        image: selenium/standalone-chrome:latest
-        volumes:
-            - /dev/shm:/dev/shm
-        ports:
-            - "4444:4444"
-        environment:
-            - SE_NODE_OVERRIDE_MAX_SESSIONS=true
-            - SE_NODE_MAX_SESSIONS=5
 
 volumes:
     app_data:

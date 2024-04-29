@@ -1,8 +1,12 @@
+# メインのコンテナ
+# ビルドはリポジトリトップで行う
+
 # 基本イメージとしてPythonの公式イメージを使用
 FROM python:3.10
 
 # 必要なパッケージをインストール
 RUN apt-get update && apt-get install -y \
+    sudo \ 
     locales \
     sqlite3 \
     postfix \
@@ -17,13 +21,9 @@ RUN groupadd -g 1000 yt_server && \
     useradd -g 1000 -u 1000 -m yt_server
 
 # 作業ディレクトリを設定
-WORKDIR /workspace
+WORKDIR /workspace/src
 
-# 使用するディレクトリを一括作成
-RUN mkdir -p /entrypoint && \
-    mkdir -p /workspace/sqlite && \
-    mkdir -p -m 777 /workspace/data && \
-    mkdir -p /workspace/yt_smtp_catcher
+RUN mkdir -p -m 777 /workspace/data
 
 #### Python環境構築 ####
 
@@ -32,15 +32,15 @@ RUN pip install --upgrade pip && \
     pip install setuptools
 
 # Pythonソースコピー
-RUN mkdir -p /workspace/yt_smtp_catcher && \
-    mkdir -p /workspace/database
-COPY yt_smtp_catcher /workspace/yt_smtp_catcher
-COPY database /workspace/database
-COPY setup.py /workspace/setup.py
-COPY setup.cfg /workspace/setup.cfg
+RUN mkdir -p /workspace/src/yt_smtp_catcher && \
+    mkdir -p /workspace/src/database
+COPY src/yt_smtp_catcher /workspace/src/yt_smtp_catcher
+COPY src/database /workspace/src/database
+COPY src/setup.py /workspace/src/setup.py
+COPY src/setup.cfg /workspace/src/setup.cfg
 
 # pipインストール
-RUN pip install -e /workspace
+RUN pip install -e /workspace/src
 
 # U-DAMはいまのところPyPIにはないので、GitHubから直接インストール
 RUN pip install git+https://github.com/shinokiwa/u-dam.git
@@ -57,13 +57,13 @@ RUN chmod -R 777 /workspace/data
 
 #### Postfix環境構築 ####
 
-COPY postfix/* /etc/postfix/
+COPY docker/main/etc/postfix/* /etc/postfix/
 RUN postmap /etc/postfix/transport
 
 #### エントリーポイントの設定 ####
 
 # 実行スクリプトのコピー
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY docker/main/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # ポートを開放
